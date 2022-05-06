@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.management.relation.Role;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.petclinic.model.Pets;
@@ -23,13 +24,14 @@ public class UserService {
 	@Autowired
 	UsersRepository  userRepository ;
 	
-	public void save(Users user ) {
-		Optional<Roles> userRole = roleRepository.findById(user.getRoleId());
-		if (userRole.isEmpty()) {
-		throw new IllegalArgumentException("Invalid User");
-	} else {
-			 userRepository.save(user);
-	}
+	public Users save(Users user ) {
+//		Optional<Roles> userRole = roleRepository.findById(user.getRoleId());
+//		if (userRole.isEmpty()) {
+//		throw new IllegalArgumentException("Invalid User");
+//	} else {
+//	}
+
+		return  userRepository.save(user);
 
 	}
  

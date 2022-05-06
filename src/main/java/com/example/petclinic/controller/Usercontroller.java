@@ -3,6 +3,8 @@ package com.example.petclinic.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,8 +25,13 @@ public class Usercontroller {
 	 UserService userService; 
 	
 	@PostMapping("add")
-	public void addUser(@RequestBody Users users) {
-		userService.save(users);
+	public ResponseEntity<?> addUser(@RequestBody Users users) {
+		try {
+			Users user = userService.save(users);
+			return ResponseEntity.ok(user);
+		} catch(Exception e) {
+			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	@GetMapping("{id}")
