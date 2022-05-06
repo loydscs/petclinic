@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,7 +26,7 @@ public class Usercontroller {
 	 UserService userService; 
 	
 	@PostMapping("add")
-	public ResponseEntity<?> addUser(@RequestBody Users users) {
+	public ResponseEntity<?> create(@RequestBody Users users) {
 		try {
 			Users user = userService.save(users);
 			return ResponseEntity.ok(user);
@@ -34,6 +35,20 @@ public class Usercontroller {
 		}
 	}
 
+	@PostMapping("update")
+	public ResponseEntity<?> update(@RequestBody Users users) {
+		try {
+			Boolean user = userService.updateUser(users);
+			if(user)
+				return new ResponseEntity<String>(HttpStatus.OK);
+			else
+				return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
+					
+		} catch(Exception e) {
+			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
 	@GetMapping("{id}")
 	public Users getUser(@PathVariable Integer id) {
 		return userService.findById(id);
@@ -44,11 +59,28 @@ public class Usercontroller {
 		return userService.findAll();
 	}
 
-	@DeleteMapping("{id}/delete/{userId}")
-	public void deleteUser(@PathVariable Integer id, @PathVariable Integer userId) {
-		userService.deleteById(id, userId);
+	@DeleteMapping("/delete/{userId}")
+	public ResponseEntity<String> deleteUser(@PathVariable Integer userId) {
+		try {
+			Boolean isDeleted = userService.deleteById(userId);
+			if (isDeleted)
+				return new ResponseEntity<String>(HttpStatus.OK);
+			else
+				return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
+		} catch (Exception e) {
+			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+	}
 	
-}
-	
+//	@PutMapping("/update")
+//	public ResponseEntity<?> updateUser(@RequestBody Users users) {
+//		try {
+//			Users user = userService.save(users);
+//			return ResponseEntity.ok(user);
+//		} catch(Exception e) {
+//			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+//		}
+//	}
 	
 }

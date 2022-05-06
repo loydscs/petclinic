@@ -55,14 +55,39 @@ public class UserService {
 		return userRepository.findAll();
 	}
 	
-	public void deleteById (Integer id, Integer userId) {
-		Users loggedUser = userRepository.getById(id);
-		int roleId = loggedUser.getRoleId();
-		if (roleId != 1) {
-			throw new IllegalArgumentException("Invalid admin");
-		}
-		 userRepository.deleteById(userId);
+	public Boolean deleteById ( Integer userId) {
+		Boolean isDeleted = false;
+		Users user = userRepository.getById(userId);
+		int roleId = user.getRoleId();
+		if(roleId == 1) {
+			userRepository.deleteById(userId);
+			isDeleted = true;
+		} else {
+			isDeleted = false;
+		}		
+		return isDeleted;
 	}
+	
+	
+     public void update (Integer userId) {
+    	 
+    	  
+    	 
+     }
+
+	public Boolean updateUser(Users user) {
+		Optional<Users> findUser = userRepository.findById(user.getId());
+		Boolean isUpdated = false;
+		if(findUser.isPresent()) {
+			userRepository.save(user);
+			isUpdated = true;
+		}
+		else
+			isUpdated = false;
+			
+		return isUpdated;
+	}
+
 }
 
 
