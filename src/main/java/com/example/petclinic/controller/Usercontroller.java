@@ -1,6 +1,7 @@
 package com.example.petclinic.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,8 +26,8 @@ public class Usercontroller {
  @Autowired
 	 UserService userService; 
 	
-	@PostMapping("add")
-	public ResponseEntity<?> create(@RequestBody Users users) {
+	@PostMapping("add")  /*/{id}*/    /*w*/
+	public ResponseEntity<?> create(/*@PathVariable Integer id,*/ @RequestBody Users users) {
 		try {
 			Users user = userService.save(users);
 			return ResponseEntity.ok(user);
@@ -35,7 +36,7 @@ public class Usercontroller {
 		}
 	}
 
-	@PostMapping("update")
+	@PostMapping("update")           /*w*/
 	public ResponseEntity<?> update(@RequestBody Users users) {
 		try {
 			Boolean user = userService.updateUser(users);
@@ -49,17 +50,21 @@ public class Usercontroller {
 		}
 	}
 	
-	@GetMapping("{id}")
-	public Users getUser(@PathVariable Integer id) {
-		return userService.findById(id);
+	@GetMapping("{id}")                        /*w*/
+	public ResponseEntity<?> getUser(@PathVariable Integer id) {
+		  Users user = userService.findById(id);
+		  if (null != user) {
+			  return  ResponseEntity.ok(user);
+		  }
+		  return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 	}
 
-	@GetMapping("allusers")
+	@GetMapping("allusers")                  /*w*/
 	public List<Users> retrieveAllUsers() {
 		return userService.findAll();
 	}
 
-	@DeleteMapping("/delete/{userId}")
+	@DeleteMapping("delete/{userId}")       /*w*/
 	public ResponseEntity<String> deleteUser(@PathVariable Integer userId) {
 		try {
 			Boolean isDeleted = userService.deleteById(userId);
@@ -73,14 +78,5 @@ public class Usercontroller {
 
 	}
 	
-//	@PutMapping("/update")
-//	public ResponseEntity<?> updateUser(@RequestBody Users users) {
-//		try {
-//			Users user = userService.save(users);
-//			return ResponseEntity.ok(user);
-//		} catch(Exception e) {
-//			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
-//		}
-//	}
 	
 }

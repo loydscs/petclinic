@@ -24,31 +24,38 @@ public class UserService {
 	@Autowired
 	UsersRepository  userRepository ;
 	
-	public Users save(Users user ) {
+//	public Users save(Users user ) {
 //		Optional<Roles> userRole = roleRepository.findById(user.getRoleId());
 //		if (userRole.isEmpty()) {
 //		throw new IllegalArgumentException("Invalid User");
 //	} else {
 //	}
-
-		return  userRepository.save(user);
+//
+//		return  userRepository.save(user);
+//
+//	}
+ 
+	public Users save(/*Integer id,*/ Users user ) {
+		Users newUser = null;
+		//Users loggedUser = userRepository.getById(id);
+		//if (null == loggedUser) throw new NullPointerException("Invalid user");
+		//int roleId = loggedUser.getRoleId();
+		//if (roleId == 1) {
+		return newUser = userRepository.save(user);
+			
+		//}else
+			//throw new IllegalArgumentException("Unauthorized user");
 
 	}
- 
-//	public void save(Integer id, Users user ) {
-//		Users loggedUser = userRepository.getById(id);
-//		int roleId = loggedUser.getRoleId();
-//		if (roleId != 1 && roleId!= 2 && roleId!=3) {
-//			userRepository.save(user);
-//			
-//		}else
-//			throw new IllegalArgumentException("Unauthorized user");
-//	
-//	}
-//	
+	
 
 	public Users findById( Integer id ) {
-		return userRepository.findById( id).get();
+		Optional<Users> user = userRepository.findById( id);
+		boolean present = user.isPresent();
+		if (present) {
+			return user.get();
+		}
+		return null;
 	}
 	
 	public List<Users> findAll () {
@@ -57,9 +64,9 @@ public class UserService {
 	
 	public Boolean deleteById ( Integer userId) {
 		Boolean isDeleted = false;
-		Users user = userRepository.getById(userId);
-		int roleId = user.getRoleId();
-		if(roleId == 1) {
+		Optional<Users> user = userRepository.findById(userId);
+		//int roleId = user.getRoleId();
+		if(user.isPresent()) {
 			userRepository.deleteById(userId);
 			isDeleted = true;
 		} else {
@@ -68,15 +75,10 @@ public class UserService {
 		return isDeleted;
 	}
 	
-	
-     public void update (Integer userId) {
-    	 
-    	  
-    	 
-     }
 
 	public Boolean updateUser(Users user) {
 		Optional<Users> findUser = userRepository.findById(user.getId());
+		
 		Boolean isUpdated = false;
 		if(findUser.isPresent()) {
 			userRepository.save(user);
