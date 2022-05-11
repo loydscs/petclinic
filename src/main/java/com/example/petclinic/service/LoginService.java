@@ -12,14 +12,9 @@ public class LoginService {
 	@Autowired
 	UsersRepository usersRepository;
 	
-	public String validate(String email, String password) {
-		Users user = usersRepository.findByEmail(email);
-		if (null == user) {
-			return "Invalid";
-		}
-		if (!user.getEmail().equals(email) || !user.getPassword().equals(password)) {
-			return "Invalid";
-		}
-		return "Valid";
+	public Users checkLogin(Users user) {
+		Users logUser = usersRepository.findByEmailAndPassword(user.getEmail(), user.getPassword());
+		return logUser;
+
 	} 
 }
