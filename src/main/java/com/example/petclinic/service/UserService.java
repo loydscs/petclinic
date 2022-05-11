@@ -35,17 +35,8 @@ public class UserService {
 //
 //	}
  
-	public Users save(/*Integer id,*/ Users user ) {
-		Users newUser = null;
-		//Users loggedUser = userRepository.getById(id);
-		//if (null == loggedUser) throw new NullPointerException("Invalid user");
-		//int roleId = loggedUser.getRoleId();
-		//if (roleId == 1) {
-		return newUser = userRepository.save(user);
-			
-		//}else
-			//throw new IllegalArgumentException("Unauthorized user");
-
+	public Users save(Users user ) {
+		return userRepository.save(user);
 	}
 	
 
@@ -88,6 +79,13 @@ public class UserService {
 			isUpdated = false;
 			
 		return isUpdated;
+	}
+	
+	public List<Users> getUsersByRole (int roleId) {
+		Roles role = new Roles();
+		role.setId(roleId);
+		List<Users> users  =  userRepository.findByRole(role);
+		return users;
 	}
 
 }

@@ -19,15 +19,15 @@ import com.example.petclinic.model.Users;
 import com.example.petclinic.service.UserService;
 
 @RestController
-@RequestMapping("/users/")
+@RequestMapping("/api/v1/users/")
 public class Usercontroller {
 	
 
  @Autowired
-	 UserService userService; 
+ UserService userService; 
 	
-	@PostMapping("add")  /*/{id}*/    /*w*/
-	public ResponseEntity<?> create(/*@PathVariable Integer id,*/ @RequestBody Users users) {
+	@PostMapping("create")
+	public ResponseEntity<?> create(@RequestBody Users users) {
 		try {
 			Users user = userService.save(users);
 			return ResponseEntity.ok(user);
@@ -59,10 +59,21 @@ public class Usercontroller {
 		  return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 	}
 
-	@GetMapping("allusers")                  /*w*/
+	@GetMapping("all")                  /*w*/
 	public List<Users> retrieveAllUsers() {
 		return userService.findAll();
 	}
+	
+	@GetMapping("role/{roleId}")
+	public ResponseEntity<?> getUsers(@PathVariable int roleId) {
+		try {
+			List<Users> users = userService.getUsersByRole(roleId);
+			return new ResponseEntity<List<Users>>(users, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
 
 	@DeleteMapping("delete/{userId}")       /*w*/
 	public ResponseEntity<String> deleteUser(@PathVariable Integer userId) {
