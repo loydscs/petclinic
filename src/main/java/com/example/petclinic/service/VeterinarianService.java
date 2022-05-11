@@ -21,7 +21,7 @@ public class VeterinarianService {
 	UsersRepository usersRepository;
 	public void save(Integer id, Veterinarian veterinarian ) {
 		Users loggedUser = usersRepository.getById(id);
-		int roleId = loggedUser.getRoleId();
+		int roleId = loggedUser.getRole().getId();
 		if (roleId != 1) {
 			throw new IllegalArgumentException("Invalid admin");
 		}
@@ -38,7 +38,7 @@ public class VeterinarianService {
 	
 	public void deleteById (Integer id, Integer userId) {
 		Users loggedUser = usersRepository.getById(id);
-		int roleId = loggedUser.getRoleId();
+		int roleId = loggedUser.getRole().getId();
 		if (roleId != 1) {
 			throw new IllegalArgumentException("Invalid admin");
 		}

@@ -24,7 +24,7 @@ public class PetsService {
 	
 	public void save(Integer id, Pets user ) {
 		Users loggedUser = usersRepository.getById(id);
-		int roleId = loggedUser.getRoleId();
+		int roleId = loggedUser.getRole().getId();
 		if (roleId != 2) {
 			throw new IllegalArgumentException("Unauthorized user");
 		}
@@ -52,7 +52,7 @@ public class PetsService {
 	
 	public void deleteById (Integer id) {
 		Users loggedUser = usersRepository.getById(id);
-		int roleId = loggedUser.getRoleId();
+		int roleId = loggedUser.getRole().getId();
 		if (roleId != 2) {
 			throw new IllegalArgumentException("Unauthorized user");
 		}
