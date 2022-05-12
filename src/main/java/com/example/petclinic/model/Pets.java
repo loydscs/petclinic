@@ -6,7 +6,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Type;
 
 import lombok.Data;
 @Entity
@@ -17,13 +22,18 @@ public class Pets {
 	@GeneratedValue
 	private int id;
 	private String name;
+	
+	@Type(type="date")
 	private Date DOB;
 	
-	@Column(name = "pet_type_id")
-	private int petTypeId;
+	@ManyToOne
+	@JoinColumn(name = "pet_type_id")
+	PetTypes petType;
+
 	
-	@Column(name = "user_id")
-	private int userId;
+	@OneToOne
+	@JoinColumn(name = "user_id")
+	Users petOwner;
 
 	public Pets() {
 		super();
@@ -53,23 +63,21 @@ public class Pets {
 	public void setDOB(Date dOB) {
 		DOB = dOB;
 	}
-
-	public int getPetTypeId() {
-		return petTypeId;
-	}
-
-	public void setPetTypeId(int petTypeId) {
-		this.petTypeId = petTypeId;
-	}
-
-	public int getUserId() {
-		return userId;
-	}
-
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
 	
-	
+	public Users getPetowner() {
+		return petOwner;
+	}
+
+	public void setPetowner(Users petOwner) {
+		this.petOwner = petOwner;
+	}
+
+	public PetTypes getPetType() {
+		return petType;
+	}
+
+	public void setPetType(PetTypes petType) {
+		this.petType = petType;
+	}
 	
 }

@@ -6,8 +6,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.petclinic.model.PetTypes;
 import com.example.petclinic.model.Pets;
 import com.example.petclinic.model.Users;
+import com.example.petclinic.repository.PetTypesRepository;
 import com.example.petclinic.repository.PetsRepository;
 import com.example.petclinic.repository.UsersRepository;
 
@@ -18,6 +20,9 @@ public class PetsService {
 	
 	@Autowired
 	PetsRepository  petsRepository ;
+	
+	@Autowired
+	PetTypesRepository  petTypeRepository ;
 	
 	@Autowired
 	UsersRepository usersRepository;
@@ -46,8 +51,10 @@ public class PetsService {
 		return petsRepository.findById( id).get();
 	}
 	
-	public List<Pets> findAll () {
-		return petsRepository.findAll();
+	public List<Pets> getPetsByOwner (Integer petOwnerId) {
+		Users petOwner = new Users();
+		petOwner.setId(petOwnerId);
+		return petsRepository.findByPetOwner(petOwner);
 	}
 	
 	public void deleteById (Integer id) {
@@ -57,5 +64,13 @@ public class PetsService {
 			throw new IllegalArgumentException("Unauthorized user");
 		}
 		petsRepository.deleteById(id);
+	}
+
+	public List<PetTypes> getPetTypes() {
+		return petTypeRepository.findAll();
+	}
+
+	public Pets createPet(Pets pet) {
+		return petsRepository.save(pet); 		
 	}
 }

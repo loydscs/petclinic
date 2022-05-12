@@ -8,11 +8,10 @@ import javax.persistence.Table;
 
 import lombok.Data;
 
-
 @Entity
 @Data
-@Table(name = "petstypes")
-public class PetsTypes {
+@Table(name = "pet_types")
+public class PetTypes {
 
 	@Id
 	@GeneratedValue
@@ -21,7 +20,7 @@ public class PetsTypes {
 	@Column(name = "type_name")
 	private String typeName;
 
-	public PetsTypes() {
+	public PetTypes() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
