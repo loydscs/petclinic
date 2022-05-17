@@ -1,8 +1,9 @@
 package com.example.petclinic.model;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,17 +24,17 @@ public class Appointment {
 	
 	@Column(name = "appoinment_date")
 	private Date appointmentDate;
-	
-	@ManyToOne(cascade = CascadeType.ALL)
+
+	@ManyToOne
 	@JoinColumn(name = "pet_id")
-	private Pets pets;
+	private Pets pet;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "veterinarian_id")
-	private Veterinarian veterinarian;
+	private Users veterinarian;
 	
-	@Column(name = "description_id")
-	private String descriptionId;
+	@Column(name = "description")
+	private String description;	
 	
 	@Column(name = "is_approved")
 	private boolean isApproved;
@@ -50,16 +51,8 @@ public class Appointment {
 		return appointmentDate;
 	}
 
-	public void setAppointmentDate(Date appointmentDate) {
+	public void setAppointmentDate(Date  appointmentDate) {
 		this.appointmentDate = appointmentDate;
-	}
-
-	public String getDescriptionId() {
-		return descriptionId;
-	}
-
-	public void setDescriptionId(String descriptionId) {
-		this.descriptionId = descriptionId;
 	}
 
 	public boolean isApproved() {
@@ -73,5 +66,28 @@ public class Appointment {
 	public Appointment() {
 	}
 
+	public Pets getPet() {
+		return pet;
+	}
+
+	public void setPet(Pets pet) {
+		this.pet = pet;
+	}
+
+	public Users getVeterinarian() {
+		return veterinarian;
+	}
+
+	public void setVeterinarian(Users veterinarian) {
+		this.veterinarian = veterinarian;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
 	
 }

@@ -17,13 +17,13 @@ import com.example.petclinic.model.Appointment;
 import com.example.petclinic.model.Users;
 import com.example.petclinic.service.AppointmentService;
 @RestController
-@RequestMapping("/appointment/")
+@RequestMapping("/api/v1/appointments/")
 public class AppointmentController {
 
 	@Autowired
 	AppointmentService  appointmentService ; 
 	
-	@PostMapping("add")
+	@PostMapping("create")
 	public ResponseEntity<?> addAppointment(@RequestBody Appointment appointment) {
 		//appointmentService.save(appointment);
 		try {
