@@ -14,31 +14,18 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.petclinic.model.Specialities;
 import com.example.petclinic.service.SpecialtiesService;
 @RestController
-@RequestMapping("/specialties/")
+@RequestMapping("/api/v1/specialties/")
 public class SpecialtiesController {
 	
 
 	 @Autowired
 	 SpecialtiesService specialtiesService; 
 		
-		@PostMapping("add")
-		public void addUser(@RequestBody Specialities role) {
-			specialtiesService.save(role);
-		}
-
-		@GetMapping("{id}")
-		public Specialities getUser(@PathVariable Integer id) {
-			return specialtiesService.findById(id);
-		}
-
-		@GetMapping("allusers")
+		@GetMapping("all")
 		public List<Specialities> retrieveAllUsers() {
 			return specialtiesService.findAll();
 		}
 
-		@DeleteMapping("{id}")
-		public void deleteUser(@PathVariable Integer id) {
-			specialtiesService.deleteById(id);	
 		
-	}
+	
 }

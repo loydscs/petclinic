@@ -8,12 +8,12 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name ="specialities")
+@Table(name ="specialties")
 public class Specialities {
 	
     @Id
     @GeneratedValue
-    @Column(name = "speciality_id")
+    @Column(name = "id")
 	private int id;
 	private String name;
 	@ManyToMany(mappedBy = "specialities", fetch= FetchType.LAZY) //name of the field in vet entity

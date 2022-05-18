@@ -3,6 +3,7 @@ package com.example.petclinic.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.petclinic.model.Users;
 import com.example.petclinic.service.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
 @RequestMapping("/api/v1/users/")
@@ -36,6 +38,22 @@ public class Usercontroller {
 		}
 	}
 
+	@PostMapping("/veterinarian/create")
+	public ResponseEntity<?> createPetOwner(@RequestBody String userJson) {
+		try {
+			JSONObject vetObj = new JSONObject(userJson);
+			ObjectMapper objectMapper = new ObjectMapper();
+			Users userModel = null;
+			userModel = objectMapper.readValue(vetObj.getString("veterinarian"), Users.class);
+			
+			int speciality_id = vetObj.getInt("speciality_id");
+			Users user = userService.saveVeterinarian(userModel, speciality_id);
+			return ResponseEntity.ok(user);
+		} catch(Exception e) {
+			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
 	@PostMapping("update")           /*w*/
 	public ResponseEntity<?> update(@RequestBody Users users) {
 		try {

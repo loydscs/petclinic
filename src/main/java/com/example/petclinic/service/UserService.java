@@ -12,8 +12,10 @@ import org.springframework.stereotype.Service;
 import com.example.petclinic.model.Pets;
 import com.example.petclinic.model.Roles;
 import com.example.petclinic.model.Users;
+import com.example.petclinic.model.VetSpecialties;
 import com.example.petclinic.repository.RolesRepository;
 import com.example.petclinic.repository.UsersRepository;
+import com.example.petclinic.repository.VetSpecialtiesRepository;
 
 @Service
 public class UserService {
@@ -23,6 +25,10 @@ public class UserService {
 	
 	@Autowired
 	UsersRepository  userRepository ;
+	
+	@Autowired
+	VetSpecialtiesRepository vetRepository ;
+	
 	
 //	public Users save(Users user ) {
 //		Optional<Roles> userRole = roleRepository.findById(user.getRoleId());
@@ -86,6 +92,19 @@ public class UserService {
 		role.setId(roleId);
 		List<Users> users  =  userRepository.findByRole(role);
 		return users;
+	}
+
+
+	public Users saveVeterinarian(Users vet, int speciality_id) {
+		Users user = userRepository.save(vet);
+		if(user != null) {
+			VetSpecialties vetspecial = new VetSpecialties();
+			vetspecial.setSpecialtyId(speciality_id);
+			vetspecial.setVeterinarianId(user.getId());
+			vetRepository.save(vetspecial);			
+		}
+		return user;
+			
 	}
 
 }
