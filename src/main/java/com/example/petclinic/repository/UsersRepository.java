@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.example.petclinic.model.Roles;
+import com.example.petclinic.model.Specialities;
 import com.example.petclinic.model.Users;
 
 public interface UsersRepository extends JpaRepository<Users, Integer>{
@@ -15,6 +17,9 @@ public interface UsersRepository extends JpaRepository<Users, Integer>{
 	List<Users> findByRole(Roles role);
 
 	Users findByEmailAndPassword(String email, String password);
+	
+    @Query("FROM Specialities s INNER JOIN VetSpecialties vs ON s.id = vs.specialtyId where vs.veterinarianId = :vetId" )
+    List<Specialities> findSpecialtiesByVetId(@Param("vetId") int vetId);
 	
 	
 	

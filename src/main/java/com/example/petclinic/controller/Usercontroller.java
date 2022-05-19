@@ -1,8 +1,11 @@
 package com.example.petclinic.controller;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.petclinic.dto.VeterinarianDto;
 import com.example.petclinic.model.Users;
 import com.example.petclinic.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -46,8 +50,9 @@ public class Usercontroller {
 			Users userModel = null;
 			userModel = objectMapper.readValue(vetObj.getString("veterinarian"), Users.class);
 			
-			int speciality_id = vetObj.getInt("speciality_id");
-			Users user = userService.saveVeterinarian(userModel, speciality_id);
+			JSONArray specialityIds = vetObj.getJSONArray("specialityIds");
+			
+			Users user = userService.saveVeterinarian(userModel, specialityIds);
 			return ResponseEntity.ok(user);
 		} catch(Exception e) {
 			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -87,6 +92,16 @@ public class Usercontroller {
 		try {
 			List<Users> users = userService.getUsersByRole(roleId);
 			return new ResponseEntity<List<Users>>(users, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@GetMapping("veterinarians")
+	public ResponseEntity<?> getVeterinarians() {
+		try {
+			List<VeterinarianDto> vetList = userService.getVeterinarians();
+			return new ResponseEntity<List<VeterinarianDto>>(vetList, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}

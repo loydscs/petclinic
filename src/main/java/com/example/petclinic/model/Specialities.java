@@ -16,12 +16,7 @@ public class Specialities {
     @Column(name = "id")
 	private int id;
 	private String name;
-	@ManyToMany(mappedBy = "specialities", fetch= FetchType.LAZY) //name of the field in vet entity
-	private Set<Veterinarian> veterinarian;
-	public Specialities() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+
 	public int getId() {
 		return id;
 	}
